@@ -1,0 +1,145 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}body{
+    background-color: lightyellow;
+}
+.MainContainer{
+   display: none;
+}
+
+/*toolBar Style */
+.toolBar{
+    position: sticky;
+    width: relative;
+    top:0;
+    padding: 13px;
+    height: 60px;;
+    background-color: rgba(0,0,0,0.8);
+}
+.buttonContainer{
+   float: right;
+}
+.btn{
+    background-color: white;
+    font-size: 15px;
+    padding: 5px;
+    border-radius: 20px;;
+    border:none;
+    font-size: 15px;
+    font-weight: 800;
+    color: black;
+
+}.btn:active{
+    transform: scale(0.9);
+}
+.btnShow{
+    background-color: lightgreen;
+    padding:10px 25px 10px 25px;
+    border-radius: 20px;
+    border: none;
+    color: gray;
+    font-size: 15px;;
+}.btnShow:active{
+    transform: scale(0.9);
+}
+
+/*overlay Style */
+#overlay {
+    position: fixed;
+    width: 100%;
+    height:100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+    cursor: pointer;
+    z-index: 1;
+}
+.classbackground{
+    width: 100%;
+    height:100%;
+    position: fixed;
+    z-index: 2;
+ }
+.canvasContainer{
+    align-items: center;
+    width: 70%;
+    height: auto;
+    position: relative;
+    z-index: 3;
+    margin:auto auto;
+}
+.canvas-wrapper {
+    margin-bottom: 6px;
+}
+canvas {
+    margin: 0 auto;
+    display: block;
+    width: 100%; 
+}
+
+/*TextContainer Style */
+.TextContainer{
+   text-align: center;
+   margin: 100px;
+}.TextContainer h1{
+    font-size: 50px;
+    font-weight: 900;
+    color:brown;
+    margin: 20px auto;
+}
+
+/*Footer Style */
+a{
+color: lightgreen;
+}
+.footer {
+    position: absolute;
+    font-size: 18px;
+    width: 100%;
+    bottom: 10px;
+    background-color:#111;
+    color: #fff;
+    padding: 30px 0;
+    border-radius: 10px;
+}  
+.container {
+    width: 100%;
+    text-align: center;
+    padding: 0 50px;
+}
+
+.social-icons li {
+    display: inline-block;
+    margin-right: 10px;
+}
+.social-icons a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+}
+.footer-bottom {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/*responsive Style*/
+@media (max-width: 768px) {
+    .divContainer{
+        width: 90%;
+        position: relative;
+        z-index: 2;
+    }
+    .footer-content {
+        grid-template-columns: repeat(1, 1fr);
+        row-gap: 20px;
+    }
+    .footer-menu{
+        text-align: left;
+    }
+    .footer-menu li {
+      display: block;
+      margin-bottom: 10px;
+    }
+}
+  

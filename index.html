@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Canvas PDF Viewer</title>
+
+	<!-- Import local StyleSheet -->
+	<link rel="stylesheet" href="Template/style.css">
+
+	<!-- Import local PDFJS library -->
+	<script src="lib/pdf.js"></script>
+
+	<!-- w3 Icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body id="body">
+	<div class="MainContainer" id="MainContainer">
+		<div id="toolBar" class="toolBar">
+					<button id="ZoomIN" class="btn"> +</button>
+					<button id="ZoomOut"  class="btn">-</button>
+				<div class="buttonContainer">
+					<button id="downlode" onclick="downloadFile()" class="btn"> <span><i class="fa fa-download" ></i></span></button>
+					<button id="Close" onclick="hideOverlay()" class="btn">cancel</button>
+				</div>
+		</div>
+		<div id="overlay"  >
+			<div class="classbackground" id="classbackground" onclick="hideOverlay()"></div>
+			<div id="canvasContainer" class="canvasContainer" ></div>
+		</div>
+	</div>
+	<div class="TextContainer">
+		<h1>PDFJS</h1>
+		<button onclick="showOverlay()" class="btnShow">Show PDF</button>
+	</div>
+
+	<footer class="footer">
+        <div class="container">
+           <ul class="social-icons">
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="https://github.com/surendran-180202/PDFJS-Example"><i class="fa fa-github"></i></a></li>
+            </ul>
+			<div class="footer-bottom"> <p>&copy; 2024 SBNTech. All rights reserved.</p><br/>Create by <a href="">Mr.B.Surendran Baiyanesh</a > </div>
+		</div>
+    </footer>
+
+<!--PDFJS integration script -->
+<script>
+        var url = 'pdfContainer/pdf2.pdf';
+		
+        function showOverlay() {
+		   document.getElementById("MainContainer").style.display = "block";
+		   document.getElementById("body").style.overflow = "hidden" ;
+	  	}
+		function hideOverlay() {
+		  document.getElementById("MainContainer").style.display = "none";
+		  document.getElementById("body").style.overflow = "auto" ;
+		}
+
+		var changescale = 5;  //If there is a delay in rendering the PDF, reduce the ChangeScale values from 5 to 2 or less. !!!
+		var width = 80;
+		renderPDF();
+
+		function renderPDF()
+		{
+			var canvasContainer = document.getElementById('canvasContainer');
+			var pdfDocument ; 
+
+			pdfjsLib.getDocument(url).promise.then(renderPages);
+		    function renderPages(pdfDoc)
+			{
+				pdfDocument = pdfDoc;
+				for(var num = 1; num <= pdfDoc.numPages; num++)
+					pdfDoc.getPage(num).then(renderPage);
+			}
+			function renderPage(page)
+			{
+				var viewport = page.getViewport({ scale: changescale });
+				var wrapper = document.createElement("div");
+				wrapper.className = "canvas-wrapper";
+				wrapper.id = "canvas-wrapper";
+				var canvas = document.createElement('canvas');
+				var ctx = canvas.getContext('2d');
+				var renderContext = { canvasContext: ctx,viewport: viewport };
+				canvas.height = viewport.height;
+				canvas.width = viewport.width;
+				wrapper.appendChild(canvas)
+				canvasContainer.appendChild(wrapper);
+				page.render(renderContext);
+			}
+
+			document.getElementById('ZoomIN').addEventListener("click", ZoomIn);
+			document.getElementById('ZoomOut').addEventListener("click", ZoomOut);
+			document.getElementById("overlay").addEventListener("wheel", function(e) 
+			{  
+				if(e.ctrlKey == true)
+				{
+					e.preventDefault();
+					e.stopPropagation();
+					if(e.deltaY > 0 ) ZoomIn();
+					else ZoomOut(); 
+				}
+			});
+
+			function ZoomIn(event)
+			{
+				if(width < 150)
+				{
+					width += 10;
+					document.getElementById('canvasContainer').style.width = ` ${width}%`;
+				}
+			}
+			function ZoomOut(event)
+			{
+				if(width > 10)
+				{
+					width -= 10;
+					document.getElementById('canvasContainer').style.width = ` ${width}%`;
+				}
+			}
+		}
+		function downloadFile() 
+		{
+			const currentTime = new Date().toLocaleTimeString();
+			var fileName = `PDF-${Date.now()} - ${currentTime}`;
+
+			fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' }).then(res => res.blob()) .then(res => {
+			const aElement = document.createElement('a');
+			aElement.setAttribute('download', fileName);
+			aElement.href = URL.createObjectURL(res);
+			aElement.setAttribute('target', '_blank');
+			aElement.click();
+			URL.revokeObjectURL(href);
+			});
+		};
+</script>
+</body>
+</html>
